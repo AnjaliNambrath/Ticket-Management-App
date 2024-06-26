@@ -1,3 +1,6 @@
+//Checking for new task notification
+setInterval(displayNotification, 1000);
+
 window.onload = function () {
   const accessT = localStorage.getItem("token");
   if (!accessT) {
@@ -6,6 +9,52 @@ window.onload = function () {
   }
   display();
 };
+
+function displayNotification() {
+  fetchNewTasks();
+}
+
+function fetchNewTasks() {
+  var userName = localStorage.getItem("USER");
+  var xhr = new XMLHttpRequest();
+  xhr.onreadystatechange = function () {
+    if (this.readyState == 4) {
+      if (this.status == 200) {
+        var newTasks = JSON.parse(this.responseText);
+        console.log(newTasks);
+        if (newTasks.length > 0) {
+          let notificationMessage = "You have new ticket assigned:\n";
+          console.log("You have new tasks");
+          newTasks.forEach(function (task) {
+            notificationMessage += `<br>Ticket ID: ${task.ticketID}, Issue: ${task.issue}\n`;
+          });
+          display();
+          toastr.options = {
+            closeButton: true,
+            debug: false,
+            newestOnTop: false,
+            progressBar: false,
+            positionClass: "toast-bottom-left",
+            preventDuplicates: false,
+            onclick: null,
+            showDuration: "300",
+            hideDuration: "1000",
+            timeOut: 0,
+            extendedTimeOut: 0,
+            showEasing: "swing",
+            hideEasing: "linear",
+            showMethod: "fadeIn",
+            hideMethod: "fadeOut",
+            tapToDismiss: false,
+          };
+          toastr["success"](`${notificationMessage}`, "New Notification");
+        }
+      }
+    }
+  };
+  xhr.open("GET", `http://localhost:5000/ticket/notifications/${userName}`, true);
+  xhr.send();
+}
 
 function logout() {
   localStorage.removeItem("token");
@@ -97,7 +146,6 @@ function display() {
   };
   htt.open("GET", "http://localhost:5000/ticket", true);
   htt.send();
-  
 }
 
 function closePopup() {
@@ -131,12 +179,12 @@ function updateStatus() {
   };
   xhttp.open("PUT", "http://localhost:5000/ticket/" + STASKID, true);
   xhttp.setRequestHeader("Content-type", "application/json");
-    xhttp.send(
-      JSON.stringify({
-        status: supstatus,
-        comment: comment,
-      })
-    );
+  xhttp.send(
+    JSON.stringify({
+      status: supstatus,
+      comment: comment,
+    })
+  );
   event.preventDefault();
   document.getElementById("supdateForm").reset();
 }
@@ -152,7 +200,6 @@ function getComments(Id) {
   console.log(ind);
   document.getElementById("comment").value = task_json[ind].comment;
 }
-
 
 //Ticket Display Function after search
 function searchTickets() {
@@ -306,43 +353,43 @@ function updateDisplay() {
   element.innerHTML = content + "</div>";
   for (let u in task_json) {
     if (NAME == task_json[u].assignedTo) {
-            flag = 1;
-            if (task_json[u].status == "Resolved") {
-              var usr = `<div class='user'><span class='cell'>${task_json[u].ticketID}</span><span class='cell'>${task_json[u].issue}</span>  
+      flag = 1;
+      if (task_json[u].status == "Resolved") {
+        var usr = `<div class='user'><span class='cell'>${task_json[u].ticketID}</span><span class='cell'>${task_json[u].issue}</span>  
                                 <span class='cell'>${task_json[u].status}</span><span class='cell'>${task_json[u].priority}</span>
                                 <button style="margin-left:20px;background-color: rgb(13, 97, 13);" class="Cbtn" disabled>Ticket Resolved</button>
                                 <p/><br></div>`;
-              content = content + usr;
-            } else if (task_json[u].status == "Closed") {
-              var usr = `<div class='user'><span class='cell'>${task_json[u].ticketID}</span><span class='cell'>${task_json[u].issue}</span>  
+        content = content + usr;
+      } else if (task_json[u].status == "Closed") {
+        var usr = `<div class='user'><span class='cell'>${task_json[u].ticketID}</span><span class='cell'>${task_json[u].issue}</span>  
                                 <span class='cell'>${task_json[u].status}<button title="Click to see comments" id="showFormButton" onclick="getComments('${task_json[u]._id}')"><i class="bi bi-chat-left-text"></i></button></span><span class='cell'>${task_json[u].priority}</span>
                                 <button style="margin-left:20px;background-color:rgb(216, 24, 24);" class="Cbtn" disabled>Ticket Closed</button>
                                 <p/><br></div>`;
-              content = content + usr;
-            } else if (
-              task_json[u].status == "In-Progress" ||
-              task_json[u].status == "Open"
-            ) {
-              var usr = `<div class='user'><span class='cell'>${task_json[u].ticketID}</span><span class='cell'>${task_json[u].issue}</span>  
+        content = content + usr;
+      } else if (
+        task_json[u].status == "In-Progress" ||
+        task_json[u].status == "Open"
+      ) {
+        var usr = `<div class='user'><span class='cell'>${task_json[u].ticketID}</span><span class='cell'>${task_json[u].issue}</span>  
                                 <span class='cell'>${task_json[u].status}<button title="Click to see comments" id="showFormButton" onclick="getComments('${task_json[u]._id}')"><i class="bi bi-chat-left-text"></i></button></span><span class='cell'>${task_json[u].priority}</span>
                                 <button style="margin-left:20px;background-color: black;" class="Cbtn" id="showFormButton" onclick="seditTicket('${task_json[u]._id}')">Update Status</button>
                                 <p/><br></div>`;
-              content = content + usr;
-            } else {
-              var usr = `<div class='user'><span class='cell'>${task_json[u].ticketID}</span><span class='cell'>${task_json[u].issue}</span>  
+        content = content + usr;
+      } else {
+        var usr = `<div class='user'><span class='cell'>${task_json[u].ticketID}</span><span class='cell'>${task_json[u].issue}</span>  
                                 <span class='cell'>${task_json[u].status}<button title="Click to see comments" id="showFormButton" onclick="getComments('${task_json[u]._id}')"><i class="bi bi-chat-left-text"></i></button></span><span class='cell'>${task_json[u].priority}</span>
                                 <button style="margin-left:20px;background-color: black;" class="Cbtn" id="showFormButton" onclick="seditTicket('${task_json[u]._id}')">Update Status</button>
                                 <p/><br></div>`;
-              content = content + usr;
-            }
-            var element = document.getElementById("root");
-            element.innerHTML = content + "</div>";
-          }
-        }
-        if (flag == 0) {
-          var element = document.getElementById("root");
-          element.innerHTML = `<br><br><div class='container' style="margin-left:270px; text-align:center;"><b>You have no tickets assigned so far!!!</b></div></div>`;
-          var element1 = document.getElementById("searchroot");
-          element1.innerHTML = "";
-        }
+        content = content + usr;
+      }
+      var element = document.getElementById("root");
+      element.innerHTML = content + "</div>";
+    }
+  }
+  if (flag == 0) {
+    var element = document.getElementById("root");
+    element.innerHTML = `<br><br><div class='container' style="margin-left:270px; text-align:center;"><b>You have no tickets assigned so far!!!</b></div></div>`;
+    var element1 = document.getElementById("searchroot");
+    element1.innerHTML = "";
+  }
 }

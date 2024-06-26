@@ -15,20 +15,19 @@ function logout() {
 let USERNAME = localStorage.getItem("USER");
 let userID = localStorage.getItem("USERID");
 let EMAIL = localStorage.getItem("EMAIL");
-function display(){
-    var content = `<br><div class="links">
+function display() {
+  var content = `<br><div class="links">
                     <button> Hello ${USERNAME} ! How can I help you today? </button>
             </div>`;
 
-    var element = document.getElementById("root");
-    element.innerHTML = content;
+  var element = document.getElementById("root");
+  element.innerHTML = content;
 }
 
 //Show form to riase ticket
 function visibileUserForm() {
   document.getElementById("popupForm2").classList.remove("hidden2");
 }
-
 
 function closePopup2() {
   document.getElementById("popupForm2").classList.add("hidden2");
@@ -42,13 +41,12 @@ function closePopup() {
   event.preventDefault();
 }
 
-
 //function to create the ticket
 function addTicket() {
   var issue = document.getElementById("issue").value;
   var priority = document.getElementById("priority").value;
-  var status = "Open"
-  var comment = "No Comments"
+  var status = "Open";
+  var comment = "No Comments";
   var assignedTo = "Not-Assigned";
   var cusID = userID;
   var userName = USERNAME;
@@ -92,41 +90,40 @@ function addTicket() {
       issue: issue,
       status: status,
       priority: priority,
-      comment:comment,
+      comment: comment,
+      New_Notification: true,
     })
   );
-   toastr.options = {
-  "closeButton": false,
-  "debug": false,
-  "newestOnTop": false,
-  "progressBar": false,
-  "positionClass": "toast-bottom-right",
-  "preventDuplicates": false,
-  "onclick": null,
-  "showDuration": "300",
-  "hideDuration": "1000",
-  "timeOut": "5000",
-  "extendedTimeOut": "1000",
-  "showEasing": "swing",
-  "hideEasing": "linear",
-  "showMethod": "fadeIn",
-  "hideMethod": "fadeOut"
-}
+  toastr.options = {
+    closeButton: false,
+    debug: false,
+    newestOnTop: false,
+    progressBar: false,
+    positionClass: "toast-bottom-right",
+    preventDuplicates: false,
+    onclick: null,
+    showDuration: "300",
+    hideDuration: "1000",
+    timeOut: "5000",
+    extendedTimeOut: "1000",
+    showEasing: "swing",
+    hideEasing: "linear",
+    showMethod: "fadeIn",
+    hideMethod: "fadeOut",
+  };
   toastr["info"]("Ticket Added Successfully!!!");
- 
+
   document.getElementById("popupForm2").reset();
   document.getElementById("popupForm2").classList.add("hidden2");
   event.preventDefault();
 }
-
-
 
 var upform;
 
 var user_json = "";
 //Agent Details Display Function
 function getProfile() {
- var htt = new XMLHttpRequest();
+  var htt = new XMLHttpRequest();
   htt.onreadystatechange = function () {
     if (this.readyState == 4) {
       if (this.status == 200) {
@@ -150,9 +147,9 @@ function editProfile() {
 }
 
 function updateProfile() {
-    var phone = document.getElementById("phone").value;
-    // var name = document.getElementById("name").value;
-    var emailid = document.getElementById("emailid").value;
+  var phone = document.getElementById("phone").value;
+  // var name = document.getElementById("name").value;
+  var emailid = document.getElementById("emailid").value;
   if (phone === "" || emailid === "") {
     toastr.options = {
       closeButton: false,
@@ -180,25 +177,25 @@ function updateProfile() {
   xhttp.onreadystatechange = function () {
     if (this.readyState == 4) {
       if (this.status == 200) {
-          getProfile();
-    toastr.options = {
-    closeButton: false,
-    debug: false,
-    newestOnTop: false,
-    progressBar: false,
-    positionClass: "toast-bottom-right",
-    preventDuplicates: false,
-    onclick: null,
-    showDuration: "300",
-    hideDuration: "1000",
-    timeOut: "5000",
-    extendedTimeOut: "1000",
-    showEasing: "swing",
-    hideEasing: "linear",
-    showMethod: "fadeIn",
-    hideMethod: "fadeOut",
-  };
-  toastr["info"]("Profile Updated Successfully!!!");
+        getProfile();
+        toastr.options = {
+          closeButton: false,
+          debug: false,
+          newestOnTop: false,
+          progressBar: false,
+          positionClass: "toast-bottom-right",
+          preventDuplicates: false,
+          onclick: null,
+          showDuration: "300",
+          hideDuration: "1000",
+          timeOut: "5000",
+          extendedTimeOut: "1000",
+          showEasing: "swing",
+          hideEasing: "linear",
+          showMethod: "fadeIn",
+          hideMethod: "fadeOut",
+        };
+        toastr["info"]("Profile Updated Successfully!!!");
       }
     }
   };
@@ -215,7 +212,6 @@ function updateProfile() {
   document.getElementById("popupForm1").classList.add("hidden1");
   event.preventDefault();
 }
-
 
 function checkEmailUnique() {
   var Email = document.getElementById("emailid").value;
@@ -247,7 +243,7 @@ function checkEmailUnique() {
             "Email ID already registered!<br>Please use a different Email ID"
           );
           document.getElementById("emailid").value = EMAIL;
-        } 
+        }
       }
     }
   };

@@ -42,6 +42,10 @@ var TicketSchema = new Schema(
       type: String,
       required: true,
     },
+    New_Notification: {
+      type: Boolean,
+      required: true,
+    },
   },
   {
     timestamps: { createdAt: "created_at", updatedAt: "updated_at" },

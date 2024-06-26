@@ -35,6 +35,9 @@ router.get("/designations/agents/:designation",agentController.getAgentsByDesign
 router.get("/ticket/search", ticketController.getSearchTicket);
 router.get("/agent/search", agentController.getSearchEmployee);
 
+//Notification Endpoints
+router.get("/ticket/notifications/:userName", ticketController.getNotity)
+
 
 //Endpoints to check data is unique
 router.get("/checkagentid", agentController.CheckEmpID);

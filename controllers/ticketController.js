@@ -84,3 +84,24 @@ exports.updateTicket = async (req, res) => {
     res.status(500).send("Error updating ticket");
   }
 };
+
+//Checking for new ticket for particular agent
+exports.getNotity = async (req, res) => {
+  try {
+    const userId = req.params.userName;
+    const newTasks = await ticket.find({
+      assignedTo: userId,
+      New_Notification: true,
+    });
+
+    newTasks.forEach(async (ticket) => {
+      ticket.New_Notification = false;
+      await ticket.save();
+    });
+
+    res.json(newTasks);
+  } catch (err) {
+    console.error("Error getting new ticket", err);
+    res.status(500).json({ error: "Error getting new ticket" });
+  }
+}
