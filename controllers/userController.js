@@ -56,6 +56,7 @@ exports.sign_in = function (req, res) {
 
 
 exports.loginRequired = function (req, res, next) {
+  console.log("Here", req.user);
   if (req.user) {
     next();
   } else {
@@ -65,6 +66,7 @@ exports.loginRequired = function (req, res, next) {
 
 exports.roleRequired = function (role) {
   return function (req, res, next) {
+    console.log("KKK",req);
     if (req.user && req.user.role === role) {
       next();
     } else {
