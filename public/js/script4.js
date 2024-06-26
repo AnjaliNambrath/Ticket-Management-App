@@ -38,32 +38,7 @@ function display() {
         for (let u in ticket_json) {
           if (EID == ticket_json[u].customerID) {
             flag = 1;
-            if (ticket_json[u].status == "Resolved") {
-              var usr = `<div class='user'><span class='cell'>${ticket_json[u].ticketID}</span><span class='cell'>${ticket_json[u].issue}</span>  
-                                <span class='cell'style="margin-left:20px;">${ticket_json[u].status}<button title="Click to see comments" id="showFormButton" onclick="getComments('${ticket_json[u]._id}')"><i class="bi bi-chat-left-text"></i></button></span>
-                                <button class="btn" onclick="editTicket('${ticket_json[u]._id}')">Manage</button>
-                                <button class="btn" onclick="deleteTicket('${ticket_json[u]._id}')">Delete</button>
-                                <p/><br></div>`;
-              content = content + usr;
-            } else if (ticket_json[u].status == "Closed") {
-              var usr = `<div class='user'><span class='cell'>${ticket_json[u].ticketID}</span><span class='cell'>${ticket_json[u].issue}<button title="Click to see comments" id="showFormButton" onclick="getComments('${ticket_json[u]._id}')"><i class="bi bi-chat-left-text"></i></button></span>  
-                                <span class='cell'style="margin-left:20px;">${ticket_json[u].status}</span>
-                                <button class="btn" onclick="editTicket('${ticket_json[u]._id}')">Manage</button>
-                                <button class="btn" onclick="deleteTicket('${ticket_json[u]._id}')">Delete</button>
-                                <p/><br></div>`;
-              content = content + usr;
-            } else if (
-              ticket_json[u].status == "In-Progress" ||
-              ticket_json[u].status == "Started"
-            ) {
-              var usr = `<div class='user'><span class='cell'>${ticket_json[u].ticketID}</span><span class='cell'>${ticket_json[u].issue}</span>  
-                                <span class='cell'style="margin-left:20px;">${ticket_json[u].status}<button title="Click to see comments" id="showFormButton" onclick="getComments('${ticket_json[u]._id}')"><i class="bi bi-chat-left-text"></i></button></span>
-                                <button class="btn" onclick="editTicket('${ticket_json[u]._id}')">Manage</button>
-                                <button class="btn" onclick="deleteTicket('${ticket_json[u]._id}')">Delete</button>
-                                <p/><br></div>`;
-              content = content + usr;
-            } else {
-              var usr = `<div class='user'><span class='cell'>${ticket_json[u].ticketID}</span><span class='cell'>${ticket_json[u].issue}</span>  
+            var usr = `<div class='user'><span class='cell'>${ticket_json[u].ticketID}</span><span class='cell'>${ticket_json[u].issue}</span>  
                                 <span class='cell'style="margin-left:20px;">${ticket_json[u].status}<button title="Click to see comments" id="showFormButton" onclick="getComments('${ticket_json[u]._id}')"><i class="bi bi-chat-left-text"></i></button></span>
                                 <button class="btn" onclick="editTicket('${ticket_json[u]._id}')">Manage</button>
                                 <button class="btn" onclick="deleteTicket('${ticket_json[u]._id}')">Delete</button>
@@ -73,7 +48,6 @@ function display() {
             var element = document.getElementById("root");
             element.innerHTML = content + "</div>";
           }
-        }
         if (flag == 0) {
           var element = document.getElementById("root");
           element.innerHTML = `<br><br><div class='container' style="margin-left:270px; text-align:center;"><b>You have not raised any tickets so far!!!</b></div></div>`;
@@ -111,31 +85,6 @@ function searchTickets() {
         for (let u in ticket_json) {
           if (EID == ticket_json[u].customerID) {
             flag = 1;
-            if (ticket_json[u].status == "Resolved") {
-              var usr = `<div class='user'><span class='cell'>${ticket_json[u].ticketID}</span><span class='cell'>${ticket_json[u].issue}</span>  
-                                <span class='cell'style="margin-left:20px;">${ticket_json[u].status}<button title="Click to see comments" id="showFormButton" onclick="getComments('${ticket_json[u]._id}')"><i class="bi bi-chat-left-text"></i></button></span>
-                                <button class="btn" onclick="editTicket('${ticket_json[u]._id}')">Manage</button>
-                                <button class="btn" onclick="deleteTicket('${ticket_json[u]._id}')">Delete</button>
-                                <p/><br></div>`;
-              content = content + usr;
-            } else if (ticket_json[u].status == "Closed") {
-              var usr = `<div class='user'><span class='cell'>${ticket_json[u].ticketID}</span><span class='cell'>${ticket_json[u].issue}</span>  
-                                <span class='cell'style="margin-left:20px;">${ticket_json[u].status}<button title="Click to see comments" id="showFormButton" onclick="getComments('${ticket_json[u]._id}')"><i class="bi bi-chat-left-text"></i></button></span>
-                                <button class="btn" onclick="editTicket('${ticket_json[u]._id}')">Manage</button>
-                                <button class="btn" onclick="deleteTicket('${ticket_json[u]._id}')">Delete</button>
-                                <p/><br></div>`;
-              content = content + usr;
-            } else if (
-              ticket_json[u].status == "In-Progress" ||
-              ticket_json[u].status == "Started"
-            ) {
-              var usr = `<div class='user'><span class='cell'>${ticket_json[u].ticketID}</span><span class='cell'>${ticket_json[u].issue}</span>  
-                                <span class='cell'style="margin-left:20px;">${ticket_json[u].status}<button title="Click to see comments" id="showFormButton" onclick="getComments('${ticket_json[u]._id}')"><i class="bi bi-chat-left-text"></i></button></span>
-                                <button class="btn" onclick="editTicket('${ticket_json[u]._id}')">Manage</button>
-                                <button class="btn" onclick="deleteTicket('${ticket_json[u]._id}')">Delete</button>
-                                <p/><br></div>`;
-              content = content + usr;
-            } else {
               var usr = `<div class='user'><span class='cell'>${ticket_json[u].ticketID}</span><span class='cell'>${ticket_json[u].issue}</span>  
                                 <span class='cell'style="margin-left:20px;">${ticket_json[u].status}<button title="Click to see comments" id="showFormButton" onclick="getComments('${ticket_json[u]._id}')"><i class="bi bi-chat-left-text"></i></button></span>
                                 <button class="btn" onclick="editTicket('${ticket_json[u]._id}')">Manage</button>
@@ -146,7 +95,7 @@ function searchTickets() {
             var element = document.getElementById("root");
             element.innerHTML = content + "</div>";
           }
-        }
+        
         if (flag == 0) {
           var element = document.getElementById("root");
           element.innerHTML =

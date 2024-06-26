@@ -1,4 +1,4 @@
-//Checking for new task notification
+//Checking for new Ticket notification
 setInterval(displayNotification, 1000);
 
 window.onload = function () {
@@ -15,7 +15,7 @@ function displayNotification() {
 }
 
 function fetchNewTasks() {
-  var userName = localStorage.getItem("USER");
+  var userName = localStorage.getItem("AGENTUSER");
   var xhr = new XMLHttpRequest();
   xhr.onreadystatechange = function () {
     if (this.readyState == 4) {
@@ -61,9 +61,10 @@ function logout() {
   location.href = "/userlogin.html";
 }
 
-var NAME = localStorage.getItem("USER");
+var NAME = localStorage.getItem("AGENTUSER");
 var task_json = "";
-//Task Display Function
+
+//Ticket Display Function
 function display() {
   var content = `<div class="links">
                 <button> HEY ${NAME} ! HERE IS YOUR ASSIGNED TICKETS </button>
@@ -163,11 +164,14 @@ function seditTicket(tkId) {
   // document.getElementById("comment").value = task_json[ind].comment;
 }
 
-//Update status of task
+//Update status of Ticket
 function updateStatus() {
   document.getElementById("popupForm").classList.add("hidden");
   var supstatus = document.getElementById("supresence").value;
   var comment = document.getElementById("comments").value;
+  if (comment ==="") {
+    comment = "No Comment"
+  }
   xhttp = new XMLHttpRequest();
 
   xhttp.onreadystatechange = function () {

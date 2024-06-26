@@ -9,9 +9,15 @@ function userLogin() {
         var restoken = JSON.parse(this.responseText);
         console.log(restoken);
         localStorage.setItem("token", JSON.stringify(restoken.token));
-        localStorage.setItem("USERID", restoken._id);
-        localStorage.setItem("EMAIL", restoken.email);
-        localStorage.setItem("USER", restoken.fullName);
+        if (restoken.role == "customer"){
+          localStorage.setItem("USERID", restoken._id);
+          localStorage.setItem("EMAIL", restoken.email);
+          localStorage.setItem("USER", restoken.fullName);
+        }else{
+          localStorage.setItem("USERID", restoken._id);
+          localStorage.setItem("AGENTEMAIL", restoken.email);
+          localStorage.setItem("AGENTUSER", restoken.fullName);
+        }
         checkUser(restoken);
       }
     }
@@ -54,9 +60,9 @@ function userRegister() {
     if (this.readyState == 4) {
       if (this.status == 200) {
         location.href = "/userlogin.html";
-        alert("Successfully Registered, Plaese Sign In");
+        alert("Successfully Registered, Please Sign In");
       }
-    }
+    } 
   };
   xhhttp.open("POST", "http://localhost:5000/auth/userregister", true);
   xhhttp.setRequestHeader("Content-type", "application/json");

@@ -4,7 +4,7 @@ const router = express.Router();
 const ticketController = require("../controllers/ticketController");
 const agentController = require("../controllers/agentController");
 var userHandlers = require("../controllers/userController.js");
-const ensureRole = userHandlers.roleRequired;
+// const ensureRole = userHandlers.roleRequired;
 
 //Login and Registration endpoints
 router.get("/profile", userHandlers.loginRequired, userHandlers.profile);

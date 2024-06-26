@@ -286,10 +286,10 @@ function fetchAgentsByDesignation() {
 // Function to populate the agent dropdown
 function populateAgentDropdown(agents) {
   var dropdown = document.getElementById("agentDropdown");
-  dropdown.innerHTML = '<option value="">Select Agent</option>'; // Clear previous options
+  dropdown.innerHTML = '<option value="">Select Agent</option>';
   agents.forEach(function (agent) {
     var option = document.createElement("option");
-    option.value = agent.agentName; // or agent.name if you prefer
+    option.value = agent.agentName;
     option.text = agent.agentName;
     dropdown.add(option);
   });
