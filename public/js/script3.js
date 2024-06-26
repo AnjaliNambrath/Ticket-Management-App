@@ -122,13 +122,15 @@ function display() {
             ) {
               var usr = `<div class='user'><span class='cell'>${task_json[u].ticketID}</span><span class='cell'>${task_json[u].issue}</span>  
                                 <span class='cell'>${task_json[u].status}<button title="Click to see comments" id="showFormButton" onclick="getComments('${task_json[u]._id}')"><i class="bi bi-chat-left-text"></i></button></span><span class='cell'>${task_json[u].priority}</span>
-                                <button style="margin-left:20px;background-color: black;" class="Cbtn" id="showFormButton" onclick="seditTicket('${task_json[u]._id}')">Update Status</button>
+                                <button style="margin-left:20px;background-color: black;" class="btn" id="showFormButton" onclick="seditTicket('${task_json[u]._id}')">Update Status</button>
+                                <button style="margin-left:20px;background-color: black;" class="btn" id="showFormButton" onclick="assignTask('${task_json[u]._id}')">Assign Agent</button>
                                 <p/><br></div>`;
               content = content + usr;
             } else {
               var usr = `<div class='user'><span class='cell'>${task_json[u].ticketID}</span><span class='cell'>${task_json[u].issue}</span>  
                                 <span class='cell'>${task_json[u].status}<button title="Click to see comments" id="showFormButton" onclick="getComments('${task_json[u]._id}')"><i class="bi bi-chat-left-text"></i></button></span><span class='cell'>${task_json[u].priority}</span>
-                                <button style="margin-left:20px;background-color: black;" class="Cbtn" id="showFormButton" onclick="seditTicket('${task_json[u]._id}')">Update Status</button>
+                                <button style="margin-left:20px;background-color: black;" class="btn" id="showFormButton" onclick="seditTicket('${task_json[u]._id}')">Update Status</button>
+                                <button style="margin-left:20px;background-color: black;" class="btn" id="showFormButton" onclick="assignTask('${task_json[u]._id}')">Assign Agent</button>
                                 <p/><br></div>`;
               content = content + usr;
             }
@@ -196,6 +198,7 @@ function updateStatus() {
 function closePopup() {
   document.getElementById("popupForm").classList.add("hidden");
   document.getElementById("popupForm3").classList.add("hidden3");
+  document.getElementById("popupForm2").classList.add("hidden2");
 }
 
 function getComments(Id) {
@@ -397,3 +400,123 @@ function updateDisplay() {
     element1.innerHTML = "";
   }
 }
+
+
+let TICKETID;
+
+function assignTask(tid) {
+  TICKETID = tid;
+  console.log(TICKETID);
+  document.getElementById("popupForm2").classList.remove("hidden2");
+  fetchDesignations();
+}
+
+// Function to fetch designations from the backend
+function fetchDesignations() {
+  var xhttp = new XMLHttpRequest();
+  xhttp.onreadystatechange = function () {
+    if (this.readyState == 4 && this.status == 200) {
+      var designations = JSON.parse(this.responseText);
+      populateDesignationDropdown(designations);
+    }
+  };
+  xhttp.open("GET", "http://localhost:5000/designations", true);
+  xhttp.send();
+}
+
+// Function to populate the designation dropdown
+function populateDesignationDropdown(designations) {
+  var dropdown = document.getElementById("designationDropdown");
+  dropdown.innerHTML = '<option value="">Select Designation</option>';
+  designations.forEach(function (designation) {
+    var option = document.createElement("option");
+    option.value = designation;
+    option.text = designation;
+    dropdown.add(option);
+  });
+}
+
+// Function to fetch agents based on selected designation
+function fetchAgentsByDesignation() {
+  var designation = document.getElementById("designationDropdown").value;
+  if (!designation) {
+    document.getElementById("agentDropdown").disabled = true;
+    return;
+  }
+
+  var xhttp = new XMLHttpRequest();
+  xhttp.onreadystatechange = function () {
+    if (this.readyState == 4 && this.status == 200) {
+      var agents = JSON.parse(this.responseText);
+      console.log(agents);
+      populateAgentDropdown(agents);
+    }
+  };
+  xhttp.open(
+    "GET",
+    "http://localhost:5000/designations/agents/" + designation,
+    true
+  );
+  xhttp.send();
+}
+
+// Function to populate the agent dropdown
+function populateAgentDropdown(agents) {
+  var dropdown = document.getElementById("agentDropdown");
+  dropdown.innerHTML = '<option value="">Select Agent</option>';
+  agents.forEach(function (agent) {
+    var option = document.createElement("option");
+    option.value = agent.agentName;
+    option.text = agent.agentName;
+    dropdown.add(option);
+  });
+  dropdown.disabled = false;
+}
+
+function assignToAgent() {
+  var agentName = document.getElementById("agentDropdown").value;
+  console.log(agentName);
+  xhttp = new XMLHttpRequest();
+  console.log(TICKETID);
+  xhttp.onreadystatechange = function () {
+    if (this.readyState == 4) {
+      console.log(this.status);
+      if (this.status == 200) {
+        console.log("HHH");
+        toastr.options = {
+          closeButton: false,
+          debug: false,
+          newestOnTop: false,
+          progressBar: false,
+          positionClass: "toast-bottom-right",
+          preventDuplicates: false,
+          onclick: null,
+          showDuration: "300",
+          hideDuration: "1000",
+          timeOut: "5000",
+          extendedTimeOut: "1000",
+          showEasing: "swing",
+          hideEasing: "linear",
+          showMethod: "fadeIn",
+          hideMethod: "fadeOut",
+        };
+        toastr["info"]("Ticket has been assigned Successfully!!!");
+        display();
+      }
+    }
+  };
+  xhttp.open("PUT", "http://localhost:5000/ticket/" + TICKETID, true);
+  xhttp.setRequestHeader("Content-type", "application/json");
+  xhttp.send(
+    JSON.stringify({
+      assignedTo: agentName,
+      New_Notification: true,
+    })
+  );
+  var dropdown = document.getElementById("agentDropdown");
+  dropdown.disabled = true;
+  dropdown.innerHTML = '<option value="">Select Agent</option>';
+  document.getElementById("popupForm2").classList.add("hidden2");
+  event.preventDefault();
+}
+

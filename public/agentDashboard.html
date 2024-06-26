@@ -64,6 +64,21 @@
             </form>
         </div>
     </div>
+    <div id="popupForm2" class="hidden2">
+        <button id="closeButton2" onclick="closePopup()">&times;</button>
+        <form>
+            <div class='form'>
+                <label><b>ASSIGN TASK TO AGENT:</b></label>
+                <select id="designationDropdown" onchange="fetchAgentsByDesignation()">
+                    <option value="">Select Designation</option>
+                </select>
+                <select id="agentDropdown" disabled>
+                    <option value="">Select Agent</option>
+                </select>
+                <button class="btn" onclick="assignToAgent()">Assign Agent</button>
+            </div>
+        </form>
+    </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
 
 </body>

@@ -28,10 +28,7 @@ router.put("/ticket/:_id", ticketController.updateTicket);
 //Agent Endpoint
 router.get("/ticket", ticketController.getAllTicket);
 router.get("/designations", agentController.getAllDesignation);
-router.get(
-  "/designations/agents/:designation",
-  agentController.getAgentsByDesignation
-);
+router.get("/designations/agents/:designation",agentController.getAgentsByDesignation);
 
 //Search Endpoints
 router.get("/ticket/search", ticketController.getSearchTicket);
