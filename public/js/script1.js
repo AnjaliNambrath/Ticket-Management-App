@@ -149,13 +149,13 @@ function checkAgentIDUnique(){
 
 //function to add the agent
 function addAgent() {
-  var agentid = document.getElementById("agentnum").value;
+  // var agentid = document.getElementById("agentnum").value;
   var agentname = document.getElementById("agentname").value;
   var designation = document.getElementById("designation").value;
   var emailid = agentname.toLowerCase().replace(" ", "") + "@zoh.com";
   var pass = agentname.toLowerCase().replace(" ", "");
   var xhttp = new XMLHttpRequest();
-  if (agentname == "" || agentid == "") {
+  if (agentname == "") {
     toastr.options = {
       closeButton: true,
       debug: false,
@@ -188,7 +188,7 @@ function addAgent() {
   xhttp.setRequestHeader("Content-type", "application/json");
   xhttp.send(
     JSON.stringify({
-      agentID: agentid,
+      // agentID: agentid,
       agentName: agentname,
       designation: designation,
       email: emailid,

@@ -4,11 +4,13 @@ const fs = require("fs");
 exports.createTicket = async (req, res) => {
   try {
     console.log(req.body);
-    var c = fs.readFileSync("./controllers/count.txt");
-    c++;
-    fs.writeFileSync("./controllers/count.txt", c.toString());
-    console.log(c);
-    req.body.ticketID = c;
+    var c = fs.readFileSync("./controllers/count.txt",'utf-8').split('\n');
+    let agentCount = parseInt(c[1], 10);
+    let ticketCount = parseInt(c[0], 10);
+    ticketCount++;
+    fs.writeFileSync("./controllers/count.txt",`${ticketCount}\n${agentCount}`);
+    console.log(ticketCount);
+    req.body.ticketID = ticketCount;
     const addTicket = await ticket.create(req.body);
     console.log("ticket Added Successfully");
     res.status(200).json(addTicket);

@@ -3,6 +3,7 @@ var mongoose = require("mongoose"),
   bcrypt = require("bcrypt");
 const Agent = require("../models/agentModel");
 const Customer = require("../models/customerModel");
+const fs = require("fs");
 
 exports.sign_in = function (req, res) {
   console.log(req.body);
@@ -94,6 +95,13 @@ exports.profile = function (req, res, next) {
 
 //Agent Register
 exports.agentRegister = function (req, res) {
+  var c = fs.readFileSync("./controllers/count.txt", "utf-8").split("\n");
+  let ticketCount = parseInt(c[0], 10);
+  let agentCount = parseInt(c[1], 10);
+  agentCount++;
+  fs.writeFileSync("./controllers/count.txt",`${ticketCount}\n${agentCount}`);
+  console.log(agentCount);
+  req.body.agentID = agentCount;
   var newUser = new Agent(req.body);
   console.log(newUser);
   newUser.hash_password = bcrypt.hashSync(req.body.password, 10);

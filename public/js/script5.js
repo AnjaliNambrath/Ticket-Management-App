@@ -223,6 +223,7 @@ function updateDisplay() {
 
 function closePopup() {
   document.getElementById("popupForm2").classList.add("hidden2");
+  document.getElementById("popupForm3").classList.add("hidden3");
 }
 
 let TICKETID;
@@ -340,4 +341,12 @@ function assignToAgent() {
   dropdown.innerHTML = '<option value="">Select Agent</option>';
   document.getElementById("popupForm2").classList.add("hidden2");
   event.preventDefault();
+}
+
+
+function getComments(Id) {
+  document.getElementById("popupForm3").classList.remove("hidden3");
+  var ind = task_json.findIndex((e) => e._id === Id);
+  console.log(ind);
+  document.getElementById("comment").value = task_json[ind].comment;
 }

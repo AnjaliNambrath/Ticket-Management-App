@@ -92,7 +92,7 @@ function addTicket() {
       priority: priority,
       comment: comment,
       New_Notification: true,
-    })
+    })  
   );
   toastr.options = {
     closeButton: false,
