@@ -31,30 +31,44 @@ Agent Module
 ------------
 1.Manage Tickets:
   -View all assigned tickets.
+  
   -Update ticket status with comments.
+  
   -Assign a ticket to an agent.
 
 Customer Module
 ------------
 1.Manage Tickets:
   -Raise new support tickets.
+  
   -View all created tickets.
+  
   -Edit and delete tickets.
+  
   -Edit profile details.
 
 More Features
 =============
 User Registration and Login: Implemented user registration and login functionality using JWT.
+
 Task Assignment: Implemented functionality for assigning tasks to specific agent based on designation.
+
 Notifications: Agents receive notifications when a new ticket is assigned to them.
+
 Filtering Tickets: Implemented APIs for filtering tickets.
+
 Search Bar: Search functionality implemented in all dashboards.
+
 Commenting: Agents can add comments while updating the ticket status.
 
 Future Scopes
 =============
 Automatic Ticket Assignment: Implement auto-assignment of tickets to agents based on specific parameters and routing logic.
+
 Comment Thread: Replace the latest comment box with a chat box that allows for comment threads where users and agents can communicate.
+
 Real-Time Updates: Use WebSockets to provide real-time updates on ticket status changes.
+
 Ticket History Tracking: Track and display the history of changes made to each ticket.
+
 Email Notifications: Implement email notifications for customers and agents for various actions like ticket updates.
