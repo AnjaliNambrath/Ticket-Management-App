@@ -49,7 +49,6 @@ function addTicket() {
   var comment = "No Comments";
   var assignedTo = "Not-Assigned";
   var cusID = userID;
-  var userName = USERNAME;
   var xhttp = new XMLHttpRequest();
   if (issue == "") {
     toastr.options = {
@@ -86,7 +85,6 @@ function addTicket() {
     JSON.stringify({
       assignedTo: assignedTo,
       customerID: cusID,
-      customerName: userName,
       issue: issue,
       status: status,
       priority: priority,

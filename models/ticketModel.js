@@ -13,11 +13,6 @@ var TicketSchema = new Schema(
       required: true,
       unique: true,
     },
-    customerName: {
-      type: String,
-      trim: true,
-      required: true,
-    },
     issue: {
       type: String,
       required: true,
@@ -26,10 +21,8 @@ var TicketSchema = new Schema(
       type: String,
       required: true,
     },
-    customerID: {
-      type: String,
-      required: true,
-    },
+    customerID: 
+    { type: Schema.Types.ObjectId, ref: "Customer" },
     assignedTo: {
       type: String,
       required: true,

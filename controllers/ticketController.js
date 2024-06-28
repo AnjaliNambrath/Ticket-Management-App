@@ -24,7 +24,7 @@ exports.createTicket = async (req, res) => {
 //Get All Ticket
 exports.getAllTicket = async (req, res) => {
   try {
-    const getticket = await ticket.find({});
+    const getticket = await ticket.find({}).populate("customerID", "fullName");;
     res.send(getticket);
   } catch (err) {
     console.error("Error getting ticket", err);
