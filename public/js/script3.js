@@ -106,7 +106,7 @@ function display() {
             flag = 1;
             if (task_json[u].status == "Resolved") {
               var usr = `<div class='user'><span class='cell'>${task_json[u].ticketID}</span><span class='cell'>${task_json[u].issue}</span>  
-                                <span class='cell'>${task_json[u].status}</span><span class='cell'>${task_json[u].priority}</span>
+                                <span class='cell'>${task_json[u].status}<button title="Click to see comments" id="showFormButton" onclick="getComments('${task_json[u]._id}')"><i class="bi bi-chat-left-text"></i></button></span></span><span class='cell'>${task_json[u].priority}</span>
                                 <button style="margin-left:20px;background-color: rgb(13, 97, 13);" class="Cbtn" disabled>Ticket Resolved</button>
                                 <p/><br></div>`;
               content = content + usr;
@@ -254,7 +254,7 @@ function searchTickets() {
             flag = 1;
             if (task_json[u].status == "Resolved") {
               var usr = `<div class='user'><span class='cell'>${task_json[u].ticketID}</span><span class='cell'>${task_json[u].issue}</span>  
-                                <span class='cell'>${task_json[u].status}</span><span class='cell'>${task_json[u].priority}</span>
+                                <span class='cell'>${task_json[u].status}<button title="Click to see comments" id="showFormButton" onclick="getComments('${task_json[u]._id}')"><i class="bi bi-chat-left-text"></i></button></span></span><span class='cell'>${task_json[u].priority}</span>
                                 <button style="margin-left:20px;background-color: rgb(13, 97, 13);" class="Cbtn" disabled>Ticket Resolved</button>
                                 <p/><br></div>`;
               content = content + usr;
@@ -363,7 +363,7 @@ function updateDisplay() {
       flag = 1;
       if (task_json[u].status == "Resolved") {
         var usr = `<div class='user'><span class='cell'>${task_json[u].ticketID}</span><span class='cell'>${task_json[u].issue}</span>  
-                                <span class='cell'>${task_json[u].status}</span><span class='cell'>${task_json[u].priority}</span>
+                                <span class='cell'>${task_json[u].status}<button title="Click to see comments" id="showFormButton" onclick="getComments('${task_json[u]._id}')"><i class="bi bi-chat-left-text"></i></button></span></span><span class='cell'>${task_json[u].priority}</span>
                                 <button style="margin-left:20px;background-color: rgb(13, 97, 13);" class="Cbtn" disabled>Ticket Resolved</button>
                                 <p/><br></div>`;
         content = content + usr;
