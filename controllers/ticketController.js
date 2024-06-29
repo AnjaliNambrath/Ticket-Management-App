@@ -1,4 +1,5 @@
 const ticket = require("../models/ticketModel");
+const Agent = require("../models/agentModel");
 const fs = require("fs");
 
 exports.createTicket = async (req, res) => {
@@ -24,7 +25,10 @@ exports.createTicket = async (req, res) => {
 //Get All Ticket
 exports.getAllTicket = async (req, res) => {
   try {
-    const getticket = await ticket.find({}).populate("customerID", "fullName");;
+    const getticket = await ticket
+      .find({})
+      .populate("customerID", "fullName")
+      .populate("assignedTo", "agentName");
     res.send(getticket);
   } catch (err) {
     console.error("Error getting ticket", err);
@@ -90,9 +94,15 @@ exports.updateTicket = async (req, res) => {
 //Checking for new ticket for particular agent
 exports.getNotity = async (req, res) => {
   try {
-    const userId = req.params.userName;
+    // Find the agent by userName
+    const userName = req.params.userName;
+    const agent = await Agent.findOne({ agentName: userName });
+    if (!agent) {
+      return res.status(404).json({ error: "Agent not found" });
+    }
+   
     const newTasks = await ticket.find({
-      assignedTo: userId,
+      assignedTo: agent._id,
       New_Notification: true,
     });
 

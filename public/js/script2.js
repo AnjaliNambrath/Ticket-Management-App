@@ -47,7 +47,7 @@ function addTicket() {
   var priority = document.getElementById("priority").value;
   var status = "Open";
   var comment = "No Comments";
-  var assignedTo = "Not-Assigned";
+  var assignedTo = null;
   var cusID = userID;
   var xhttp = new XMLHttpRequest();
   if (issue == "") {

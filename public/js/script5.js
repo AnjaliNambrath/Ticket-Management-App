@@ -54,15 +54,16 @@ function display() {
         res = this.responseText;
         task_json = JSON.parse(res);
         for (let u in task_json) {
-          if (task_json[u].assignedTo == "Not-Assigned") {
+          if (task_json[u].assignedTo == null) {
             var usr = `<div class='user'><span class='cell'>${task_json[u].ticketID}</span><span class='cell'>${task_json[u].issue}</span>  
                     <span class='cell'>${task_json[u].status}<button title="Click to see comments" id="showFormButton" onclick="getComments('${task_json[u]._id}')"><i class="bi bi-chat-left-text"></i></button></span><span class='cell'>${task_json[u].customerID.fullName}</span>
                     <button class="btn" onclick="assignTask('${task_json[u]._id}')">ASSIGN TICKET</button></div>`;
             content = content + usr;
           } else {
             var usr = `<div class='user'><span class='cell'>${task_json[u].ticketID}</span><span class='cell'>${task_json[u].issue}</span>  
-                    <span class='cell'>${task_json[u].status}<button title="Click to see comments" id="showFormButton" onclick="getComments('${task_json[u]._id}')"><i class="bi bi-chat-left-text"></i></button></span><span class='cell'>${task_json[u].customerID.fullName}</span>
-                    <span class='cell'>${task_json[u].assignedTo}</span><p/><br></div>`;
+                    <span class='cell'>${task_json[u].status}<button title="Click to see comments" id="showFormButton" onclick="getComments('${task_json[u]._id}')"><i class="bi bi-chat-left-text"></i></button></span>
+                    <span class='cell'>${task_json[u].customerID.fullName}</span>
+                    <span class='cell'>${task_json[u].assignedTo.agentName}</span><p/><br></div>`;
             content = content + usr;
           }
           var element = document.getElementById("root");
@@ -119,7 +120,7 @@ function searchTickets() {
         res = this.responseText;
         task_json = JSON.parse(res);
         for (let u in task_json) {
-          if (task_json[u].assignedTo == "Not-Assigned") {
+          if (task_json[u].assignedTo == null) {
             var usr = `<div class='user'><span class='cell'>${task_json[u].ticketID}</span><span class='cell'>${task_json[u].issue}</span>  
                     <span class='cell'>${task_json[u].status}<button title="Click to see comments" id="showFormButton" onclick="getComments('${task_json[u]._id}')"><i class="bi bi-chat-left-text"></i></button></span><span class='cell'>${task_json[u].customerName}</span>
                     <button class="btn" onclick="assignTask('${task_json[u]._id}')">ASSIGN TICKET</button></div>`;
@@ -127,7 +128,7 @@ function searchTickets() {
           } else {
             var usr = `<div class='user'><span class='cell'>${task_json[u].ticketID}</span><span class='cell'>${task_json[u].issue}</span>  
                     <span class='cell'>${task_json[u].status}<button title="Click to see comments" id="showFormButton" onclick="getComments('${task_json[u]._id}')"><i class="bi bi-chat-left-text"></i></button></span><span class='cell'>${task_json[u].customerName}</span>
-                    <span class='cell'>${task_json[u].assignedTo}</span><p/><br></div>`;
+                    <span class='cell'>${task_json[u].assignedTo.agentName}</span><p/><br></div>`;
             content = content + usr;
           }
           var element = document.getElementById("root");
@@ -205,7 +206,7 @@ function updateDisplay() {
   var element = document.getElementById("root");
   element.innerHTML = content + "</div>";
   for (let u in task_json) {
-    if (task_json[u].assignedTo == "Not-Assigned") {
+    if (task_json[u].assignedTo == null) {
       var usr = `<div class='user'><span class='cell'>${task_json[u].ticketID}</span><span class='cell'>${task_json[u].issue}</span>  
                     <span class='cell'>${task_json[u].status}<button title="Click to see comments" id="showFormButton" onclick="getComments('${task_json[u]._id}')"><i class="bi bi-chat-left-text"></i></button></span><span class='cell'>${task_json[u].customerName}</span>
                     <button class="btn" onclick="assignTask('${task_json[u]._id}')">ASSIGN TICKET</button></div>`;
@@ -213,7 +214,7 @@ function updateDisplay() {
     } else {
       var usr = `<div class='user'><span class='cell'>${task_json[u].ticketID}</span><span class='cell'>${task_json[u].issue}</span>  
                     <span class='cell'>${task_json[u].status}<button title="Click to see comments" id="showFormButton" onclick="getComments('${task_json[u]._id}')"><i class="bi bi-chat-left-text"></i></button></span><span class='cell'>${task_json[u].customerName}</span>
-                    <span class='cell'>${task_json[u].assignedTo}</span><p/><br></div>`;
+                    <span class='cell'>${task_json[u].assignedTo.agentName}</span><p/><br></div>`;
       content = content + usr;
     }
     var element = document.getElementById("root");
@@ -290,7 +291,7 @@ function populateAgentDropdown(agents) {
   dropdown.innerHTML = '<option value="">Select Agent</option>';
   agents.forEach(function (agent) {
     var option = document.createElement("option");
-    option.value = agent.agentName;
+    option.value = agent._id;
     option.text = agent.agentName;
     dropdown.add(option);
   });
@@ -298,8 +299,8 @@ function populateAgentDropdown(agents) {
 }
 
 function assignToAgent() {
-  var agentName = document.getElementById("agentDropdown").value;
-  console.log(agentName);
+  var agentID = document.getElementById("agentDropdown").value;
+  console.log(agentID);
   xhttp = new XMLHttpRequest();
     console.log(TICKETID);
   xhttp.onreadystatechange = function () {
@@ -333,7 +334,7 @@ function assignToAgent() {
   xhttp.setRequestHeader("Content-type", "application/json");
   xhttp.send(
     JSON.stringify({
-      assignedTo: agentName,
+      assignedTo: agentID,
     })
   );
   var dropdown = document.getElementById("agentDropdown");

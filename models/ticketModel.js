@@ -23,10 +23,8 @@ var TicketSchema = new Schema(
     },
     customerID: 
     { type: Schema.Types.ObjectId, ref: "Customer" },
-    assignedTo: {
-      type: String,
-      required: true,
-    },
+    assignedTo: 
+    { type: Schema.Types.ObjectId, ref: "Agent" },
     priority: {
       type: String,
       required: true,

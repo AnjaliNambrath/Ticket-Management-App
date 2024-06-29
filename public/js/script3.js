@@ -102,7 +102,7 @@ function display() {
         task_json = JSON.parse(res);
         let flag = 0;
         for (let u in task_json) {
-          if (NAME == task_json[u].assignedTo) {
+          if (NAME == task_json[u].assignedTo.agentName) {
             flag = 1;
             if (task_json[u].status == "Resolved") {
               var usr = `<div class='user'><span class='cell'>${task_json[u].ticketID}</span><span class='cell'>${task_json[u].issue}</span>  
@@ -250,7 +250,7 @@ function searchTickets() {
         task_json = JSON.parse(res);
         let flag = 0;
         for (let u in task_json) {
-          if (NAME == task_json[u].assignedTo) {
+          if (NAME == task_json[u].assignedTo.agentName) {
             flag = 1;
             if (task_json[u].status == "Resolved") {
               var usr = `<div class='user'><span class='cell'>${task_json[u].ticketID}</span><span class='cell'>${task_json[u].issue}</span>  
@@ -359,7 +359,7 @@ function updateDisplay() {
   var element = document.getElementById("root");
   element.innerHTML = content + "</div>";
   for (let u in task_json) {
-    if (NAME == task_json[u].assignedTo) {
+    if (NAME == task_json[u].assignedTo.agentName) {
       flag = 1;
       if (task_json[u].status == "Resolved") {
         var usr = `<div class='user'><span class='cell'>${task_json[u].ticketID}</span><span class='cell'>${task_json[u].issue}</span>  
