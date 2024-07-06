@@ -29,6 +29,8 @@ exports.getAllTicket = async (req, res) => {
       .find({})
       .populate("customerID", "fullName")
       .populate("assignedTo", "agentName");
+    console.log("LL",getticket);
+    // console.log("LP", getticket[0].customerID.id);
     res.send(getticket);
   } catch (err) {
     console.error("Error getting ticket", err);

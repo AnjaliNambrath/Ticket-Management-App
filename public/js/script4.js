@@ -36,7 +36,8 @@ function display() {
         ticket_json = JSON.parse(res);
         let flag = 0;
         for (let u in ticket_json) {
-          if (EID == ticket_json[u].customerID) {
+          console.log(ticket_json[u].customerID._id,"HH", EID);
+          if (EID == ticket_json[u].customerID._id) {
             flag = 1;
             var usr = `<div class='user'><span class='cell'>${ticket_json[u].ticketID}</span><span class='cell'>${ticket_json[u].issue}</span>  
                                 <span class='cell'style="margin-left:20px;">${ticket_json[u].status}<button title="Click to see comments" id="showFormButton" onclick="getComments('${ticket_json[u]._id}')"><i class="bi bi-chat-left-text"></i></button></span>
