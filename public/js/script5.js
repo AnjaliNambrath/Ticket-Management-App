@@ -122,12 +122,13 @@ function searchTickets() {
         for (let u in task_json) {
           if (task_json[u].assignedTo == null) {
             var usr = `<div class='user'><span class='cell'>${task_json[u].ticketID}</span><span class='cell'>${task_json[u].issue}</span>  
-                    <span class='cell'>${task_json[u].status}<button title="Click to see comments" id="showFormButton" onclick="getComments('${task_json[u]._id}')"><i class="bi bi-chat-left-text"></i></button></span><span class='cell'>${task_json[u].customerName}</span>
+                    <span class='cell'>${task_json[u].status}<button title="Click to see comments" id="showFormButton" onclick="getComments('${task_json[u]._id}')"><i class="bi bi-chat-left-text"></i></button></span><span class='cell'>${task_json[u].customerID.fullName}</span>
                     <button class="btn" onclick="assignTask('${task_json[u]._id}')">ASSIGN TICKET</button></div>`;
             content = content + usr;
           } else {
             var usr = `<div class='user'><span class='cell'>${task_json[u].ticketID}</span><span class='cell'>${task_json[u].issue}</span>  
-                    <span class='cell'>${task_json[u].status}<button title="Click to see comments" id="showFormButton" onclick="getComments('${task_json[u]._id}')"><i class="bi bi-chat-left-text"></i></button></span><span class='cell'>${task_json[u].customerName}</span>
+                    <span class='cell'>${task_json[u].status}<button title="Click to see comments" id="showFormButton" onclick="getComments('${task_json[u]._id}')"><i class="bi bi-chat-left-text"></i></button></span>
+                    <span class='cell'>${task_json[u].customerID.fullName}</span>
                     <span class='cell'>${task_json[u].assignedTo.agentName}</span><p/><br></div>`;
             content = content + usr;
           }
@@ -208,12 +209,13 @@ function updateDisplay() {
   for (let u in task_json) {
     if (task_json[u].assignedTo == null) {
       var usr = `<div class='user'><span class='cell'>${task_json[u].ticketID}</span><span class='cell'>${task_json[u].issue}</span>  
-                    <span class='cell'>${task_json[u].status}<button title="Click to see comments" id="showFormButton" onclick="getComments('${task_json[u]._id}')"><i class="bi bi-chat-left-text"></i></button></span><span class='cell'>${task_json[u].customerName}</span>
+                    <span class='cell'>${task_json[u].status}<button title="Click to see comments" id="showFormButton" onclick="getComments('${task_json[u]._id}')"><i class="bi bi-chat-left-text"></i></button></span><span class='cell'>${task_json[u].customerID.fullName}</span>
                     <button class="btn" onclick="assignTask('${task_json[u]._id}')">ASSIGN TICKET</button></div>`;
       content = content + usr;
     } else {
       var usr = `<div class='user'><span class='cell'>${task_json[u].ticketID}</span><span class='cell'>${task_json[u].issue}</span>  
-                    <span class='cell'>${task_json[u].status}<button title="Click to see comments" id="showFormButton" onclick="getComments('${task_json[u]._id}')"><i class="bi bi-chat-left-text"></i></button></span><span class='cell'>${task_json[u].customerName}</span>
+                    <span class='cell'>${task_json[u].status}<button title="Click to see comments" id="showFormButton" onclick="getComments('${task_json[u]._id}')"><i class="bi bi-chat-left-text"></i></button></span>
+                    <span class='cell'>${task_json[u].customerID.fullName}</span>
                     <span class='cell'>${task_json[u].assignedTo.agentName}</span><p/><br></div>`;
       content = content + usr;
     }

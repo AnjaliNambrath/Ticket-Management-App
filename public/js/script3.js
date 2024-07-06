@@ -102,7 +102,8 @@ function display() {
         task_json = JSON.parse(res);
         let flag = 0;
         for (let u in task_json) {
-          if (NAME == task_json[u].assignedTo.agentName) {
+          if (task_json[u].assignedTo != null) {
+            if (NAME == task_json[u].assignedTo.agentName){
             flag = 1;
             if (task_json[u].status == "Resolved") {
               var usr = `<div class='user'><span class='cell'>${task_json[u].ticketID}</span><span class='cell'>${task_json[u].issue}</span>  
@@ -138,12 +139,14 @@ function display() {
             element.innerHTML = content + "</div>";
           }
         }
+      }
+        console.log(flag);
         if (flag == 0) {
           var element = document.getElementById("root");
           element.innerHTML = `<br><br><div class='container' style="margin-left:270px; text-align:center;"><b>You have no tickets assigned so far!!!</b></div></div>`;
           var element1 = document.getElementById("searchroot");
           element1.innerHTML = "";
-        }
+        }      
       }
     }
   };
@@ -250,7 +253,8 @@ function searchTickets() {
         task_json = JSON.parse(res);
         let flag = 0;
         for (let u in task_json) {
-          if (NAME == task_json[u].assignedTo.agentName) {
+          if (task_json[u].assignedTo != null) {
+            if (NAME == task_json[u].assignedTo.agentName){
             flag = 1;
             if (task_json[u].status == "Resolved") {
               var usr = `<div class='user'><span class='cell'>${task_json[u].ticketID}</span><span class='cell'>${task_json[u].issue}</span>  
@@ -284,13 +288,14 @@ function searchTickets() {
             element.innerHTML = content + "</div>";
           }
         }
+      }
         if (flag == 0) {
           var element = document.getElementById("root");
           element.innerHTML = `<br><br><div class='container' style="margin-left:270px; text-align:center;"><b>You have no tickets assigned so far!!!</b></div></div>`;
           var element1 = document.getElementById("searchroot");
           element1.innerHTML = "";
         }
-      }
+    }
     }
   };
   htt.open(
@@ -359,7 +364,8 @@ function updateDisplay() {
   var element = document.getElementById("root");
   element.innerHTML = content + "</div>";
   for (let u in task_json) {
-    if (NAME == task_json[u].assignedTo.agentName) {
+    if (task_json[u].assignedTo != null) {
+            if (NAME == task_json[u].assignedTo.agentName){
       flag = 1;
       if (task_json[u].status == "Resolved") {
         var usr = `<div class='user'><span class='cell'>${task_json[u].ticketID}</span><span class='cell'>${task_json[u].issue}</span>  
@@ -393,6 +399,7 @@ function updateDisplay() {
       element.innerHTML = content + "</div>";
     }
   }
+}
   if (flag == 0) {
     var element = document.getElementById("root");
     element.innerHTML = `<br><br><div class='container' style="margin-left:270px; text-align:center;"><b>You have no tickets assigned so far!!!</b></div></div>`;
@@ -466,7 +473,7 @@ function populateAgentDropdown(agents) {
   dropdown.innerHTML = '<option value="">Select Agent</option>';
   agents.forEach(function (agent) {
     var option = document.createElement("option");
-    option.value = agent.agentName;
+    option.value = agent._id;
     option.text = agent.agentName;
     dropdown.add(option);
   });

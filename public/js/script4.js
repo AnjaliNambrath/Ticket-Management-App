@@ -84,15 +84,15 @@ function searchTickets() {
         ticket_json = JSON.parse(res);
         let flag = 0;
         for (let u in ticket_json) {
-          if (EID == ticket_json[u].customerID) {
+          if (EID == ticket_json[u].customerID._id) {
             flag = 1;
-              var usr = `<div class='user'><span class='cell'>${ticket_json[u].ticketID}</span><span class='cell'>${ticket_json[u].issue}</span>  
+            var usr = `<div class='user'><span class='cell'>${ticket_json[u].ticketID}</span><span class='cell'>${ticket_json[u].issue}</span>  
                                 <span class='cell'style="margin-left:20px;">${ticket_json[u].status}<button title="Click to see comments" id="showFormButton" onclick="getComments('${ticket_json[u]._id}')"><i class="bi bi-chat-left-text"></i></button></span>
                                 <button class="btn" onclick="editTicket('${ticket_json[u]._id}')">Manage</button>
                                 <button class="btn" onclick="deleteTicket('${ticket_json[u]._id}')">Delete</button>
                                 <p/><br></div>`;
-              content = content + usr;
-            }
+            content = content + usr;
+          }
             var element = document.getElementById("root");
             element.innerHTML = content + "</div>";
           }

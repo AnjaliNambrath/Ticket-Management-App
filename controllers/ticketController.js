@@ -39,23 +39,65 @@ exports.getAllTicket = async (req, res) => {
 };
 
 //Search Ticket
+// exports.getSearchTicket = async (req, res) => {
+//   try {
+//     const searchTerm = req.query.searchTerm || "";
+//     const searchRegex = new RegExp(searchTerm, "i");
+
+//     const tickets = await ticket
+//       .find({
+//         $or: [
+//           { issue: { $regex: searchRegex } },
+//           { status: { $regex: searchRegex } },
+//           { priority: { $regex: searchRegex } },
+//         ],
+//       })
+//       .populate("customerID", "fullName")
+//       .populate("assignedTo", "agentName")
+
+//     // Filter tickets based on populated fields
+//     const filteredTickets = tickets.filter((ticket) => {
+//       return (
+//         searchRegex.test(ticket.customerID.fullName) ||
+//         searchRegex.test(ticket.assignedTo.agentName)
+//       );
+//     });
+
+//     res.json(filteredTickets);
+//   } catch (err) {
+//     console.error("Error getting ticket", err);
+//     res.status(500).json({ error: "Error getting ticket" });
+//   }
+// };
+
 exports.getSearchTicket = async (req, res) => {
   try {
     const searchTerm = req.query.searchTerm || "";
     const searchRegex = new RegExp(searchTerm, "i");
 
-    const tickt = await ticket.find({
+    // Find tickets based on issue, status, or priority
+    const tickets = await ticket.find({
       $or: [
-        // { taskID: searchTerm },
         { issue: { $regex: searchRegex } },
         { status: { $regex: searchRegex } },
-        { customerName: { $regex: searchRegex } },
-        { assignedTo: { $regex: searchRegex } },
         { priority: { $regex: searchRegex } },
       ],
+    })
+      .populate("customerID", "fullName") // Populate customerID with fullName
+      .populate("assignedTo", "agentName"); // Populate assignedTo with agentName
+
+    // Filter tickets based on populated fields
+    const filteredTickets = tickets.filter((ticket) => {
+      return (
+        searchRegex.test(ticket.customerID.fullName) ||
+        searchRegex.test(ticket.assignedTo.agentName) ||
+        searchRegex.test(ticket.issue) ||
+        searchRegex.test(ticket.status) ||
+        searchRegex.test(ticket.priority)
+      );
     });
 
-    res.json(tickt);
+    res.json(filteredTickets);
   } catch (err) {
     console.error("Error getting ticket", err);
     res.status(500).json({ error: "Error getting ticket" });
@@ -80,7 +122,9 @@ exports.deleteTicket = async (req, res) => {
 //Update Ticket Details
 exports.updateTicket = async (req, res) => {
   const cId = req.params._id;
+  console.log("kk", cId);
   const updatedTicket = req.body;
+  console.log(updatedTicket);
   try {
     console.log("HIA");
     const updateByid = await ticket.findByIdAndUpdate(cId, updatedTicket);
