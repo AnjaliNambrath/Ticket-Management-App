@@ -9,6 +9,9 @@ window.onload = function () {
 };
 
 function logout() {
+  localStorage.removeItem("USER");
+  localStorage.removeItem("EMAIL");
+  localStorage.removeItem("USERID");
   localStorage.removeItem("token");
   location.href = "/userlogin.html";
 }

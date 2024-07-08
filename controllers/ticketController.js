@@ -44,6 +44,26 @@ exports.getAllTicket = async (req, res) => {
 //     const searchTerm = req.query.searchTerm || "";
 //     const searchRegex = new RegExp(searchTerm, "i");
 
+//     const tickt = await ticket.find({
+//       $or: [
+//         // { ticketID: searchTerm },
+//         { issue: { $regex: searchRegex } },
+//         { status: { $regex: searchRegex } },
+//         { priority: { $regex: searchRegex } },
+//       ],
+//     });
+
+//     res.json(tickt);
+//   } catch (err) {
+//     console.error("Error getting ticket", err);
+//     res.status(500).json({ error: "Error getting ticket" });
+//   }
+// }
+// exports.getSearchTicket = async (req, res) => {
+//   try {
+//     const searchTerm = req.query.searchTerm || "";
+//     const searchRegex = new RegExp(searchTerm, "i");
+
 //     const tickets = await ticket
 //       .find({
 //         $or: [
@@ -62,13 +82,14 @@ exports.getAllTicket = async (req, res) => {
 //         searchRegex.test(ticket.assignedTo.agentName)
 //       );
 //     });
-
 //     res.json(filteredTickets);
 //   } catch (err) {
 //     console.error("Error getting ticket", err);
 //     res.status(500).json({ error: "Error getting ticket" });
 //   }
 // };
+const mongoose = require("mongoose");
+const Ticket = mongoose.model("Ticket");
 
 exports.getSearchTicket = async (req, res) => {
   try {
@@ -88,9 +109,12 @@ exports.getSearchTicket = async (req, res) => {
 
     // Filter tickets based on populated fields
     const filteredTickets = tickets.filter((ticket) => {
+      const customerName = ticket.customerID ? ticket.customerID.fullName : "";
+      const agentName = ticket.assignedTo ? ticket.assignedTo.agentName : "";
+
       return (
-        searchRegex.test(ticket.customerID.fullName) ||
-        searchRegex.test(ticket.assignedTo.agentName) ||
+        searchRegex.test(customerName) ||
+        searchRegex.test(agentName) ||
         searchRegex.test(ticket.issue) ||
         searchRegex.test(ticket.status) ||
         searchRegex.test(ticket.priority)
@@ -103,6 +127,41 @@ exports.getSearchTicket = async (req, res) => {
     res.status(500).json({ error: "Error getting ticket" });
   }
 };
+
+// exports.getSearchTicket = async (req, res) => {
+//   try {
+//     const searchTerm = req.query.searchTerm || "";
+//     const searchRegex = new RegExp(searchTerm, "gm");
+//     console.log("ST", searchTerm, "SR", searchRegex);
+//     // Find tickets based on issue, status, or priority
+//     const tickets = await ticket.find({
+//       $or: [
+//         { issue: { $regex: searchRegex } },
+//         { status: { $regex: searchRegex } },
+//         { priority: { $regex: searchRegex } },
+//       ],
+//     })
+//       .populate("customerID", "fullName") // Populate customerID with fullName
+//       .populate("assignedTo", "agentName"); // Populate assignedTo with agentName
+//       console.log("IS", tickets[0].issue, "PR", tickets[0].priority);
+
+//     // Filter tickets based on populated fields
+//     const filteredTickets = tickets.filter((ticket) => {
+//       return (
+//         searchRegex.test(ticket.customerID.fullName) ||
+//         searchRegex.test(ticket.assignedTo.agentName) ||
+//         searchRegex.test(ticket.issue) ||
+//         searchRegex.test(ticket.status) ||
+//         searchRegex.test(ticket.priority)
+//       );
+//     });
+//     console.log("FFF", filteredTickets);
+//     res.json(filteredTickets);
+//   } catch (err) {
+//     console.error("Error getting ticket", err);
+//     res.status(500).json({ error: "Error getting ticket" });
+//   }
+// };
 
 //Delete ticket by ID
 exports.deleteTicket = async (req, res) => {

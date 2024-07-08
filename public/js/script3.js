@@ -57,6 +57,9 @@ function fetchNewTasks() {
 }
 
 function logout() {
+  localStorage.removeItem("AGENTUSER");
+  localStorage.removeItem("AGENTEMAIL");
+  localStorage.removeItem("USERID");
   localStorage.removeItem("token");
   location.href = "/userlogin.html";
 }
@@ -108,13 +111,13 @@ function display() {
             if (task_json[u].status == "Resolved") {
               var usr = `<div class='user'><span class='cell'>${task_json[u].ticketID}</span><span class='cell'>${task_json[u].issue}</span>  
                                 <span class='cell'>${task_json[u].status}<button title="Click to see comments" id="showFormButton" onclick="getComments('${task_json[u]._id}')"><i class="bi bi-chat-left-text"></i></button></span></span><span class='cell'>${task_json[u].priority}</span>
-                                <button style="margin-left:20px;background-color: rgb(13, 97, 13);" class="Cbtn" disabled>Ticket Resolved</button>
+                                <button style="margin-left:50px;background-color: rgb(13, 97, 13);" class="Cbtn" disabled>Ticket Resolved</button>
                                 <p/><br></div>`;
               content = content + usr;
             } else if (task_json[u].status == "Closed") {
               var usr = `<div class='user'><span class='cell'>${task_json[u].ticketID}</span><span class='cell'>${task_json[u].issue}</span>  
                                 <span class='cell'>${task_json[u].status}<button title="Click to see comments" id="showFormButton" onclick="getComments('${task_json[u]._id}')"><i class="bi bi-chat-left-text"></i></button></span><span class='cell'>${task_json[u].priority}</span>
-                                <button style="margin-left:20px;background-color:rgb(216, 24, 24);" class="Cbtn" disabled>Ticket Closed</button>
+                                <button style="margin-left:50px;background-color:rgb(216, 24, 24);" class="Cbtn" disabled>Ticket Closed</button>
                                 <p/><br></div>`;
               content = content + usr;
             } else if (
@@ -251,6 +254,7 @@ function searchTickets() {
       if (this.status == 200) {
         res = this.responseText;
         task_json = JSON.parse(res);
+        console.log(task_json);
         let flag = 0;
         for (let u in task_json) {
           if (task_json[u].assignedTo != null) {
@@ -259,13 +263,13 @@ function searchTickets() {
             if (task_json[u].status == "Resolved") {
               var usr = `<div class='user'><span class='cell'>${task_json[u].ticketID}</span><span class='cell'>${task_json[u].issue}</span>  
                                 <span class='cell'>${task_json[u].status}<button title="Click to see comments" id="showFormButton" onclick="getComments('${task_json[u]._id}')"><i class="bi bi-chat-left-text"></i></button></span></span><span class='cell'>${task_json[u].priority}</span>
-                                <button style="margin-left:20px;background-color: rgb(13, 97, 13);" class="Cbtn" disabled>Ticket Resolved</button>
+                                <button style="margin-left:50px;background-color: rgb(13, 97, 13);" class="Cbtn" disabled>Ticket Resolved</button>
                                 <p/><br></div>`;
               content = content + usr;
             } else if (task_json[u].status == "Closed") {
               var usr = `<div class='user'><span class='cell'>${task_json[u].ticketID}</span><span class='cell'>${task_json[u].issue}</span>  
                                 <span class='cell'>${task_json[u].status}<button title="Click to see comments" id="showFormButton" onclick="getComments('${task_json[u]._id}')"><i class="bi bi-chat-left-text"></i></button></span><span class='cell'>${task_json[u].priority}</span>
-                                <button style="margin-left:20px;background-color:rgb(216, 24, 24);" class="Cbtn" disabled>Ticket Closed</button>
+                                <button style="margin-left:50px;background-color:rgb(216, 24, 24);" class="Cbtn" disabled>Ticket Closed</button>
                                 <p/><br></div>`;
               content = content + usr;
             } else if (
@@ -274,13 +278,15 @@ function searchTickets() {
             ) {
               var usr = `<div class='user'><span class='cell'>${task_json[u].ticketID}</span><span class='cell'>${task_json[u].issue}</span>  
                                 <span class='cell'>${task_json[u].status}<button title="Click to see comments" id="showFormButton" onclick="getComments('${task_json[u]._id}')"><i class="bi bi-chat-left-text"></i></button></span><span class='cell'>${task_json[u].priority}</span>
-                                <button style="margin-left:20px;background-color: black;" class="Cbtn" id="showFormButton" onclick="seditTicket('${task_json[u]._id}')">Update Status</button>
+                                <button style="margin-left:20px;background-color: black;" class="btn" id="showFormButton" onclick="seditTicket('${task_json[u]._id}')">Update Status</button>
+                                <button style="margin-left:20px;background-color: black;" class="btn" id="showFormButton" onclick="assignTask('${task_json[u]._id}')">Assign Agent</button>
                                 <p/><br></div>`;
               content = content + usr;
             } else {
               var usr = `<div class='user'><span class='cell'>${task_json[u].ticketID}</span><span class='cell'>${task_json[u].issue}</span>  
                                 <span class='cell'>${task_json[u].status}<button title="Click to see comments" id="showFormButton" onclick="getComments('${task_json[u]._id}')"><i class="bi bi-chat-left-text"></i></button></span><span class='cell'>${task_json[u].priority}</span>
-                                <button style="margin-left:20px;background-color: black;" class="Cbtn" id="showFormButton" onclick="seditTicket('${task_json[u]._id}')">Update Status</button>
+                                <button style="margin-left:20px;background-color: black;" class="btn" id="showFormButton" onclick="seditTicket('${task_json[u]._id}')">Update Status</button>
+                                <button style="margin-left:20px;background-color: black;" class="btn" id="showFormButton" onclick="assignTask('${task_json[u]._id}')">Assign Agent</button>
                                 <p/><br></div>`;
               content = content + usr;
             }
@@ -290,10 +296,32 @@ function searchTickets() {
         }
       }
         if (flag == 0) {
-          var element = document.getElementById("root");
-          element.innerHTML = `<br><br><div class='container' style="margin-left:270px; text-align:center;"><b>You have no tickets assigned so far!!!</b></div></div>`;
-          var element1 = document.getElementById("searchroot");
-          element1.innerHTML = "";
+    //       var element = document.getElementById("root");
+    //       element.innerHTML = `<div id="searchroot">
+    // <input type="text" id="Searchtickets" style="margin-left:650px;" oninput="searchTickets()"
+    //     placeholder="Search for Ticket Details Here">
+    //     </div><br><br><div class='container' style="margin-left:-70px; text-align:center;"><b>No details matched your search criteria!!!</b></div></div>`;
+    //       var element1 = document.getElementById("searchroot");
+    //       element1.innerHTML = "";
+    display();
+    toastr.options = {
+      closeButton: true,
+      debug: false,
+      newestOnTop: false,
+      progressBar: false,
+      positionClass: "toast-bottom-right",
+      preventDuplicates: false,
+      onclick: null,
+      showDuration: "300",
+      hideDuration: "1000",
+      timeOut: "5000",
+      extendedTimeOut: "1000",
+      showEasing: "swing",
+      hideEasing: "linear",
+      showMethod: "fadeIn",
+      hideMethod: "fadeOut",
+    };
+    toastr["error"]("No details matched your search criteria!!!");
         }
     }
     }
@@ -370,13 +398,13 @@ function updateDisplay() {
       if (task_json[u].status == "Resolved") {
         var usr = `<div class='user'><span class='cell'>${task_json[u].ticketID}</span><span class='cell'>${task_json[u].issue}</span>  
                                 <span class='cell'>${task_json[u].status}<button title="Click to see comments" id="showFormButton" onclick="getComments('${task_json[u]._id}')"><i class="bi bi-chat-left-text"></i></button></span></span><span class='cell'>${task_json[u].priority}</span>
-                                <button style="margin-left:20px;background-color: rgb(13, 97, 13);" class="Cbtn" disabled>Ticket Resolved</button>
+                                <button style="margin-left:50px;background-color: rgb(13, 97, 13);" class="Cbtn" disabled>Ticket Resolved</button>
                                 <p/><br></div>`;
         content = content + usr;
       } else if (task_json[u].status == "Closed") {
         var usr = `<div class='user'><span class='cell'>${task_json[u].ticketID}</span><span class='cell'>${task_json[u].issue}</span>  
                                 <span class='cell'>${task_json[u].status}<button title="Click to see comments" id="showFormButton" onclick="getComments('${task_json[u]._id}')"><i class="bi bi-chat-left-text"></i></button></span><span class='cell'>${task_json[u].priority}</span>
-                                <button style="margin-left:20px;background-color:rgb(216, 24, 24);" class="Cbtn" disabled>Ticket Closed</button>
+                                <button style="margin-left:50px;background-color:rgb(216, 24, 24);" class="Cbtn" disabled>Ticket Closed</button>
                                 <p/><br></div>`;
         content = content + usr;
       } else if (
@@ -385,13 +413,15 @@ function updateDisplay() {
       ) {
         var usr = `<div class='user'><span class='cell'>${task_json[u].ticketID}</span><span class='cell'>${task_json[u].issue}</span>  
                                 <span class='cell'>${task_json[u].status}<button title="Click to see comments" id="showFormButton" onclick="getComments('${task_json[u]._id}')"><i class="bi bi-chat-left-text"></i></button></span><span class='cell'>${task_json[u].priority}</span>
-                                <button style="margin-left:20px;background-color: black;" class="Cbtn" id="showFormButton" onclick="seditTicket('${task_json[u]._id}')">Update Status</button>
+                                <button style="margin-left:20px;background-color: black;" class="btn" id="showFormButton" onclick="seditTicket('${task_json[u]._id}')">Update Status</button>
+                                <button style="margin-left:20px;background-color: black;" class="btn" id="showFormButton" onclick="assignTask('${task_json[u]._id}')">Assign Agent</button>
                                 <p/><br></div>`;
         content = content + usr;
       } else {
         var usr = `<div class='user'><span class='cell'>${task_json[u].ticketID}</span><span class='cell'>${task_json[u].issue}</span>  
                                 <span class='cell'>${task_json[u].status}<button title="Click to see comments" id="showFormButton" onclick="getComments('${task_json[u]._id}')"><i class="bi bi-chat-left-text"></i></button></span><span class='cell'>${task_json[u].priority}</span>
-                                <button style="margin-left:20px;background-color: black;" class="Cbtn" id="showFormButton" onclick="seditTicket('${task_json[u]._id}')">Update Status</button>
+                                <button style="margin-left:20px;background-color: black;" class="btn" id="showFormButton" onclick="seditTicket('${task_json[u]._id}')">Update Status</button>
+                                <button style="margin-left:20px;background-color: black;" class="btn" id="showFormButton" onclick="assignTask('${task_json[u]._id}')">Assign Agent</button>
                                 <p/><br></div>`;
         content = content + usr;
       }

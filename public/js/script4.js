@@ -101,7 +101,7 @@ function searchTickets() {
           var element = document.getElementById("root");
           element.innerHTML =
             content +
-            "<div class='user'>You have not raised any tickets so far</div></div>";
+            "<div class='user'>No details matched your search criteria!!!</div></div>";
         }
       }
     }
