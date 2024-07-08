@@ -3,7 +3,7 @@ Ticket Management System
 Overview
 ========
 This is a Ticket Management System built with Node.js, Express.js, and MongoDB.
-The system manages support tickets and includes different roles: Admin, Agent, and Customer.Implemented user registration and login functionality using JWT.
+The system manages support tickets and includes different roles: Admin, Agent, and Customer. Implemented user registration and login functionality using JWT.
 
 Personas
 ========
@@ -76,3 +76,7 @@ Real-Time Updates: Use WebSockets to provide real-time updates on ticket status 
 Ticket History Tracking: Track and display the history of changes made to each ticket.
 
 Email Notifications: Implement email notifications for customers and agents for various actions like ticket updates.
+
+Resolution time tracking: Each ticket to be assigned an SLA clock based on the priority of the ticket and continuosly track the resolution time.
+
+Reporting: Dashboard that reflects visual summary of the tickets for a particular team.
